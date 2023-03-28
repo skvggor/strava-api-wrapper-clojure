@@ -2,12 +2,19 @@
   (:require [strava-api.get-env :refer [get-strava-env]]
             [compojure.core :refer [defroutes GET]]
             [compojure.route :as route]
-            [org.httpkit.server :as server])
+            [org.httpkit.server :as server]
+            [clojure.data.json :as json])
   (:gen-class))
 
 (defroutes app
-  (GET "/" [] "<h1>Hello, World!</h1>")
-  (route/not-found "<h1>Page not found</h1>"))
+  (GET "/" []
+    {:status 200
+     :body (json/write-str {:message "Hello World!"})
+     :headers {"Content-Type" "application/json"}})
+
+  (route/not-found
+    {:status 404
+     :body "Not Found"}))
 
 (defn -main []
   (let [port (get (get-strava-env) :port)]
