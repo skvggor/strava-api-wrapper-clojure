@@ -6,7 +6,9 @@
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [compojure "1.7.0"]
                  [http-kit "2.6.0"]
-                 [org.clojure/data.json "2.4.0"]]
+                 [org.clojure/data.json "2.4.0"]
+                 [clj-http "3.12.3"]
+                 [cheshire "5.11.0"]]
   :main ^:skip-aot strava-api.core
   :uberjar-name "strava-api.jar"
   :target-path "target/%s"
