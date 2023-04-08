@@ -8,25 +8,42 @@
             [clojure.data.json :as json])
   (:gen-class))
 
+(def get-request-body {:client_id (get (get-env-vars) :client-id)
+                   :client_secret (get (get-env-vars) :client-secret)
+                   :refresh_token (get (get-env-vars) :refresh-token)
+                   :grant_type "refresh_token"})
+
+(def get-access-token (client/post (str (get (get-env-vars) :strava-domain) "/api/v3/oauth/token")
+                            {:body (json/write-str get-request-body)
+                             :headers {"Content-Type" "application/json"}}))
+
+(defn map-access-token [data]
+  (let [body (get data :body)
+        json-map (json/read-str body :key-fn keyword)]
+    (get json-map :access_token)))
+
+(def access_token (map-access-token get-access-token))
+
+(def get-activities (client/get (str (get (get-env-vars) :strava-domain) "/api/v3/athletes/" (get (get-env-vars) :user-id) "/stats")
+                                {:headers {"Authorization" (str "Bearer " access_token)}}))
+
+(defn map-total-distance [data]
+  (let [body (get data :body)
+        json-map (json/read-str body :key-fn keyword)]
+    (get (json-map :ytd_ride_totals) :distance)))
+
+(def total-distance-in-year (float (/ (Integer. (map-total-distance get-activities)) 1000)))
+
 (defroutes app
-  (get-handler "/api/v1/strava/hi"
+  (get-handler "/api/v1/hi"
                {:message "Hello World!"})
 
-  (get-handler "/api/v1/strava"
-               {:message "Strava"})
+  (get-handler "/api/v1/strava/total-distance/current-year"
+               {:distance total-distance-in-year})
 
   (route/not-found
-    {:status 404
-     :body "Not Found"}))
-
-(let [response (client/post (str (get (get-env-vars) :strava-domain) "/oauth/token")
-                            {:throw-entire-message? true
-                             :form-params {:client_id (get (get-env-vars) :client-id)
-                                                    :client_secret (get (get-env-vars) :client-secret)
-                                                    :code (get (get-env-vars) :code)
-                                                    :grant_type "authorization_code"}
-                             :content-type :json})]
-  (println response))
+   {:status 404
+    :body "Not Found"}))
 
 (defn -main []
   (let [port (get (get-env-vars) :port)]
