@@ -1,5 +1,6 @@
 (ns strava-api.strava
-  (:require [strava-api.utils :refer [get-env-vars]]
+  (:require [strava-api.utils :refer [get-env-vars,
+                                      round-to]]
             [clj-http.client :as client]
             [clojure.data.json :as json]))
 
@@ -24,16 +25,24 @@
       (handle-http-error response))))
 
 (defn fetch-activities [access-token]
-  (let [response (client/get (str (env-var :strava-domain) "/api/v3/athletes/" (env-var :user-id) "/stats")
+  (let [response (client/get (str
+                              (env-var :strava-domain)
+                              "/api/v3/athletes/"
+                              (env-var :user-id)
+                              "/stats")
                              {:headers {"Authorization" (str "Bearer " access-token)}
-                              :throw-exceptions false})]
-    (if (= 200 (:status response))
-      (-> response :body (json/read-str :key-fn keyword) (:ytd_ride_totals :distance))
+                              :throw-exceptions false})
+        body (json/read-str (:body response) :key-fn keyword)]
+    (if (and (= 200 (:status response))
+             (map? body)
+             (map? (:ytd_ride_totals body))
+             (number? (:distance (:ytd_ride_totals body))))
+      (:distance (:ytd_ride_totals body))
       (handle-http-error response))))
 
 (defn fetch-total-distance-in-year []
   (-> (fetch-access-token)
       (fetch-activities)
-      (Integer.)
       (/ 1000)
-      (float)))
+      (float)
+      (round-to 1)))

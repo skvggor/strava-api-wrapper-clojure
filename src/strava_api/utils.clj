@@ -17,7 +17,11 @@
    :api-url (get env-vars :STRAVA_API_URL)
    :client-id (get env-vars :STRAVA_CLIENT_ID)
    :client-secret (get env-vars :STRAVA_CLIENT_SECRET)
-   :refresh-token (get env-vars :STRAVA_REFRESH_TOKEN) 
+   :refresh-token (get env-vars :STRAVA_REFRESH_TOKEN)
    :code (get env-vars :STRAVA_CODE)
    :user-id (get env-vars :STRAVA_USER_ID)
    :port (Integer. (get env-vars :PORT))})
+
+(defn round-to [number precision]
+  (let [factor (Math/pow 10 precision)]
+    (/ (Math/round (* number factor)) factor)))

@@ -7,14 +7,12 @@
             [org.httpkit.server :as server])
   (:gen-class))
 
-(def total-distance-in-year (fetch-total-distance-in-year))
-
 (defroutes app
   (get-handler "/api/v1/hi"
-               {:message "Hello World!"})
+               (fn [] {:message "Hello World!"}))
 
   (get-handler "/api/v1/strava/total-distance/current-year"
-               {:distance total-distance-in-year})
+               (fn [] {:distance (fetch-total-distance-in-year)}))
 
   (route/not-found
    {:status 404
