@@ -6,9 +6,11 @@ RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
 RUN chmod 0755 /usr/local/bin/lein
 RUN lein
 
-WORKDIR /app
+WORKDIR /
 
-ADD . /app
+ADD . /
+
+COPY resources/.env resources/
 
 COPY resources/.env resources/
 
