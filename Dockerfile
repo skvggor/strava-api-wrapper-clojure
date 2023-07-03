@@ -1,20 +1,11 @@
 FROM openjdk:19-jdk-buster
 
-RUN apt-get update && apt-get install -y curl unzip
+RUN apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*
+RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > /usr/local/bin/lein \
+    && chmod 0755 /usr/local/bin/lein \
+    && lein
 
-RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > /usr/local/bin/lein
-RUN chmod 0755 /usr/local/bin/lein
-RUN lein
-
-WORKDIR /
-
-ADD . /
-
-COPY resources/.env resources/
-
-COPY resources/.env resources/
-
-RUN lein deps
-RUN lein uberjar
-
-CMD ["java", "-jar", "target/uberjar/strava-api.jar"]
+WORKDIR /usr/src/app
+COPY . /usr/src/app
+COPY ./start.sh /usr/src/app/
+CMD ["./start.sh"]
