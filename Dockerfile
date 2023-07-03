@@ -10,8 +10,9 @@ WORKDIR /app
 
 ADD . /app
 
-RUN lein deps
+COPY resources/.env resources/
 
+RUN lein deps
 RUN lein uberjar
 
 CMD ["java", "-jar", "target/uberjar/strava-api.jar"]
