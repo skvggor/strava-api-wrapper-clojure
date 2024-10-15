@@ -35,9 +35,9 @@
         body (json/read-str (:body response) :key-fn keyword)]
     (if (and (= 200 (:status response))
              (map? body)
-             (map? (:ytd_ride_totals body))
-             (number? (:distance (:ytd_ride_totals body))))
-      (:distance (:ytd_ride_totals body))
+             (map? (:ytd_run_totals body))
+             (number? (:distance (:ytd_run_totals body))))
+      (:distance (:ytd_run_totals body))
       (handle-http-error response))))
 
 (defn fetch-total-distance-in-year []
