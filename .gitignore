@@ -11,3 +11,4 @@ pom.xml.asc
 .clj-kondo
 .lsp
 .lein-failures
+.nrepl-port
