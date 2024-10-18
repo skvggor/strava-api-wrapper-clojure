@@ -2,14 +2,7 @@
   (:require [clojure.test :refer [deftest
                                   is
                                   testing]]
-            [strava-api.utils :refer [read-file
-                                      round-to]]))
-
-(deftest test-read-file
-  (testing "Test read-file function"
-    (let [result (read-file "resources/test.env")]
-      (is (= "11222" (:STRAVA_CLIENT_ID result)))
-      (is (= "https://www.strava.com" (:STRAVA_DOMAIN result))))))
+            [strava-api.utils :refer [round-to]]))
 
 (deftest test-round-to
   (testing "Test round-to function"

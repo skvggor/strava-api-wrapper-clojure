@@ -6,7 +6,9 @@ pom.xml
 pom.xml.asc
 *.jar
 *.class
-/resources/.env
+.env
+.lein-env
+config.edn
 .calva
 .clj-kondo
 .lsp

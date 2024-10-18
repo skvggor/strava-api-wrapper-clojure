@@ -5,6 +5,7 @@
             :url "https://www.eclipse.org/legal/epl-2.0/"}
   :dependencies [[org.clojure/clojure "1.11.1"]
                  [compojure "1.7.0"]
+                 [yogthos/config "1.2.1"]
                  [http-kit "2.6.0"]
                  [org.clojure/data.json "2.4.0"]
                  [clj-http "3.12.3"]

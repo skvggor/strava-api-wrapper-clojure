@@ -13,7 +13,7 @@
     (throw (ex-info (str "HTTP error " status) {:status status :body body}))))
 
 (defn fetch-access-token []
-  (let [response (client/post (str (env-var :strava-domain) "/api/v3/oauth/token")
+  (let [response (client/post (str (env-var :domain) "/api/v3/oauth/token")
                               {:body (json/write-str {:client_id (env-var :client-id)
                                                       :client_secret (env-var :client-secret)
                                                       :refresh_token (env-var :refresh-token)
@@ -26,7 +26,7 @@
 
 (defn fetch-activities [access-token]
   (let [response (client/get (str
-                              (env-var :strava-domain)
+                              (env-var :domain)
                               "/api/v3/athletes/"
                               (env-var :user-id)
                               "/stats")
