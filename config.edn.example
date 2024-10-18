@@ -1,0 +1,8 @@
+{:strava-domain "https://www.strava.com"
+:strava-api-url "/api/v3"
+:strava-client-id "number"
+:strava-client-secret "hash"
+:strava-refresh-token "hash"
+:strava-user-id "number"
+:strava-code "hash"
+:port 3000}

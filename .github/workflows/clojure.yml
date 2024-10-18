@@ -2,18 +2,26 @@ name: Clojure CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main", "develop"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Install dependencies
-      run: lein deps
-    - name: Run tests
-      run: lein test
+      - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: lein deps
+      - name: Run tests
+        run: lein test
+        env:
+          PORT: 3000
+          STRAVA_DOMAIN: https://www.strava.com
+          STRAVA_API_URL: /api/v3
+          STRAVA_CODE: code
+          STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
+          STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
+          STRAVA_REFRESH_TOKEN: ${{ secrets.STRAVA_REFRESH_TOKEN }}
+          STRAVA_USER_ID: ${{ secrets.STRAVA_USER_ID }}
