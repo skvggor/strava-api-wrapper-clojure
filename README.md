@@ -113,5 +113,5 @@ strava-api-wrapper-clojure/
 
 ## License
 
-[Insert your license here]
+This project is licensed under the Eclipse Public License - v 2.0.
 
