@@ -17,6 +17,11 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
+      - name: Install Leiningen
+        run: |
+          wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein
+          chmod +x lein
+          sudo mv lein /usr/local/bin/
       - name: Install dependencies
         run: lein deps
       - name: Run tests

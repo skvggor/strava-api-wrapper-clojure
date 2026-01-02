@@ -24,25 +24,34 @@
       (-> response :body (json/read-str :key-fn keyword) (:access_token))
       (handle-http-error response))))
 
-(defn fetch-activities [access-token]
-  (let [response (client/get (str
+(def sport-fields
+  {:run "ytd_run_totals"
+   :ride "ytd_ride_totals"})
+
+(defn get-sport-field [sport]
+  (get sport-fields (keyword sport) "ytd_run_totals"))
+
+(defn fetch-activities [access-token sport]
+  (let [sport-field (get-sport-field sport)
+        response (client/get (str
                               (env-var :domain)
                               "/api/v3/athletes/"
                               (env-var :user-id)
                               "/stats")
                              {:headers {"Authorization" (str "Bearer " access-token)}
                               :throw-exceptions false})
-        body (json/read-str (:body response) :key-fn keyword)]
+        body (json/read-str (:body response) :key-fn keyword)
+        totals (get body (keyword sport-field))]
     (if (and (= 200 (:status response))
              (map? body)
-             (map? (:ytd_run_totals body))
-             (number? (:distance (:ytd_run_totals body))))
-      (:distance (:ytd_run_totals body))
+             (map? totals)
+             (number? (:distance totals)))
+      (:distance totals)
       (handle-http-error response))))
 
-(defn fetch-total-distance-in-year []
+(defn fetch-total-distance-in-year [sport]
   (-> (fetch-access-token)
-      (fetch-activities)
+      (fetch-activities sport)
       (/ 1000)
       (float)
       (round-to 1)))
