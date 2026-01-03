@@ -1,4 +1,4 @@
-FROM openjdk:19-jdk-buster
+FROM openjdk:27-ea-jdk-trixie
 
 RUN apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*
 RUN curl https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein > /usr/local/bin/lein \
