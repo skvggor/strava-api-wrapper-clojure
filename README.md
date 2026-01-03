@@ -49,6 +49,35 @@ lein run
 
 The server will start on port 3000 (or the port specified in config.edn).
 
+## Docker Deployment
+
+For production deployment with Docker and Caddy reverse proxy, create a `compose.yml` file:
+
+```yaml
+services:
+  strava-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    networks:
+      - caddy_net
+    labels:
+      - caddy=your-subdomain.yourdomain.com
+      - caddy.reverse_proxy={{upstreams 3002}}
+      - caddy.encode=zstd gzip
+    expose:
+      - 3002
+    volumes:
+      - ./config.edn:/usr/src/app/config.edn
+
+networks:
+  caddy_net:
+    external: true
+```
+
+Replace `your-subdomain.yourdomain.com` with your actual domain. Ensure your `config.edn` file is present and properly configured.
+
 ## API Endpoints
 
 ### Get Total Distance
