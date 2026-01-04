@@ -1,4 +1,4 @@
-# strava-api-wrapper-clojure (WIP)
+# strava-api-wrapper-clojure
 
 [![wakatime](https://wakatime.com/badge/user/6fd82e7b-8d36-4419-85dc-58cd397667a8/project/0cc5c842-0060-4667-b377-78b66c418b6d.svg)](https://wakatime.com/badge/user/6fd82e7b-8d36-4419-85dc-58cd397667a8/project/0cc5c842-0060-4667-b377-78b66c418b6d) [![CI and Deploy](https://github.com/skvggor/strava-api-wrapper-clojure/actions/workflows/ci-and-deploy.yml/badge.svg)](https://github.com/skvggor/strava-api-wrapper-clojure/actions/workflows/ci-and-deploy.yml)
 
